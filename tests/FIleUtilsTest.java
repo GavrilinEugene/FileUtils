@@ -1,11 +1,13 @@
 import org.junit.Test;
 
 import java.io.*;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 
 /**
- * Tests fir different Utils with files
+ * Tests
  */
 public class FIleUtilsTest {
     @Test
@@ -46,5 +48,21 @@ public class FIleUtilsTest {
         }
         expectedReader.close();
         actualReader.close();
+    }
+
+    @Test
+    public void frequencyWordsFromFile() throws Exception {
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("testFrequency.txt"), "UTF-8"));
+        String text = "we\n all love, love love\n cats\t cats Cats.";
+        writer.write(text);
+        writer.flush();
+        writer.close();
+
+        Map<String, Integer> expected = new TreeMap<>();
+        expected.put("we", 1);
+        expected.put("all", 1);
+        expected.put("cats", 3);
+        expected.put("love", 3);
+        assertEquals(expected, FIleUtils.getWordFrequencyFromFile("testFrequency.txt"));
     }
 }
